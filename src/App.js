@@ -9,11 +9,13 @@ import ProfileScreen from "./components/Pages/ProfileScreen/ProfileScreen";
 import ShippingScreen from "./components/Pages/ShippingScreen/ShippingScreen";
 import Header from "./components/SharedComp/Header/Header";
 import Footer from "./components/SharedComp/Footer/Footer";
+import PaymentScreen from "./components/Pages/PaymentScreen/PaymentScreen";
+import PlaceOrderScreen from "./components/Pages/PlaceOrderScreen/PlaceOrderScreen";
 
 function App() {
   return (
     <BrowserRouter>
-    <Header/>
+      <Header />
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<HomeScreen />} />
@@ -24,8 +26,10 @@ function App() {
         <Route path="/profile" element={<ProfileScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
         <Route path="/shipping" element={<ShippingScreen />} />
+        <Route path="/payment" element={<PaymentScreen />} />
+        <Route path="/placeOrder" element={<PlaceOrderScreen />} />
       </Routes>
-      <Footer/>
+      <Footer />
     </BrowserRouter>
   );
 }
