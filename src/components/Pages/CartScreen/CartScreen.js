@@ -25,12 +25,12 @@ const CartScreen = () => {
   }
 
   const checkoutHandler=()=>{
-    navigate('/login?redirect=shipping')
+    navigate('/shipping')
   }
 
   return (
     <>
-    <Header/>
+  
     <div className='container mt-4'>
     <Row>
       <Col md={8}>
@@ -98,7 +98,7 @@ const CartScreen = () => {
      </Col>
     </Row>
     </div>
-    <Footer/>
+
     </>
   )
 }

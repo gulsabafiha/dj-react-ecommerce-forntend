@@ -25,6 +25,7 @@ const ProductScreen = ({history}) => {
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
   const navigate=useNavigate();
+ 
 
   useEffect(() => {
     dispatch(listProductDetails(id));
@@ -37,7 +38,7 @@ const ProductScreen = ({history}) => {
 
   return (
     <>
-    <Header/>
+ 
     <div className="container">
       
       <Link to="/" className="btn btn-light my-3">
@@ -126,7 +127,7 @@ const ProductScreen = ({history}) => {
       )}
       
     </div>
-    <Footer/>
+   
     </>
   );
 };

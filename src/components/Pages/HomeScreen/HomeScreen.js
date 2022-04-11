@@ -19,13 +19,13 @@ const HomeScreen = () => {
 
   return (
     <div>
-      <Header />
+      
       <Container className="py-5">
         <h1>Latest Products</h1>
         {loading ? (
-         <Loader/>
+          <Loader />
         ) : error ? (
-          <Message variant='danger'>{error}</Message>
+          <Message variant="danger">{error}</Message>
         ) : (
           <Row>
             {products.map((product) => (
@@ -36,7 +36,7 @@ const HomeScreen = () => {
           </Row>
         )}
       </Container>
-      <Footer />
+      
     </div>
   );
 };
