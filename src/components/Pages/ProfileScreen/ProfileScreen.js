@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Container, Form, Button } from "react-bootstrap";
+import { Row, Col, Container, Form, Button, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getUserDetails, updateUserProfile } from "../../../actions/userActions";
+import { listMyOrdersDetails } from "../../../actions/orderActions";
+import {
+  getUserDetails,
+  updateUserProfile,
+} from "../../../actions/userActions";
 import { USER_UPDATE_PROFILE_RESET } from "../../../constants/UserConstance";
-import Footer from "../../SharedComp/Footer/Footer";
-import Header from "../../SharedComp/Header/Header";
 import Loader from "../Loader";
 import Message from "../Message";
+import { LinkContainer } from "react-router-bootstrap";
 
 const ProfileScreen = () => {
   const [name, setName] = useState("");
@@ -20,46 +23,48 @@ const ProfileScreen = () => {
 
   const userDetails = useSelector((state) => state.userDetails);
   const { loading, error, user } = userDetails;
- 
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
   const { success } = userUpdateProfile;
- 
+
+  const orderListMy = useSelector((state) => state.orderListMy);
+  const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
 
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");
     } else {
       if (!user || !user.name || success) {
-        dispatch({type:USER_UPDATE_PROFILE_RESET})
+        dispatch({ type: USER_UPDATE_PROFILE_RESET });
         dispatch(getUserDetails("profile"));
+        dispatch(listMyOrdersDetails());
       } else {
         setName(user.name);
         setEmail(user.email);
       }
     }
-  }, [navigate, userInfo, dispatch, user,success]);
+  }, [navigate, userInfo, dispatch, user, success]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setMessage("Passwords do not match!");
     } else {
-      dispatch(updateUserProfile({
-        'id':user._id,
-        'name':name,
-        'email':email,
-        'password':password
-      }))
-      setMessage(''); 
+      dispatch(
+        updateUserProfile({
+          id: user._id,
+          name: name,
+          email: email,
+          password: password,
+        })
+      );
+      setMessage("");
     }
   };
   return (
-   
-    
     <Container className="py-5">
       <Row>
         <Col md={3}>
@@ -114,11 +119,41 @@ const ProfileScreen = () => {
         </Col>
         <Col md={9}>
           <h2>My Orders</h2>
+          {loadingOrders ? (
+            <Loader/>
+          ):errorOrders ?(
+            <Message variant='danger'>{errorOrders}</Message>
+          ):(
+            <Table striped responsive className="table-sm">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Date</th>
+                  <th>Total</th>
+                  <th>Paid</th>
+                  <th>Delivered</th>
+                 
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map(order=>(
+                  <tr key={order._id}>
+                    <td>{order._id}</td>
+                    <td>{order.createdAt.substring(0,10)}</td>
+                    <td>${order.totalPrice}</td>
+                    <td>{order.isPaid ? order.paidAt.substring(0,10):(<i className="fas fa-times" style={{color:'red'}}></i>)}</td>
+                    <td><LinkContainer to={`/order/${order._id}`}>
+                      <Button className="btn-sm">Details</Button>
+                    </LinkContainer></td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
         </Col>
       </Row>
     </Container>
-   
-    
   );
 };
 

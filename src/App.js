@@ -11,6 +11,7 @@ import Header from "./components/SharedComp/Header/Header";
 import Footer from "./components/SharedComp/Footer/Footer";
 import PaymentScreen from "./components/Pages/PaymentScreen/PaymentScreen";
 import PlaceOrderScreen from "./components/Pages/PlaceOrderScreen/PlaceOrderScreen";
+import OrderDetailsScreen from "./components/Pages/OrderDetailsScreen/OrderDetailsScreen";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/shipping" element={<ShippingScreen />} />
         <Route path="/payment" element={<PaymentScreen />} />
         <Route path="/placeOrder" element={<PlaceOrderScreen />} />
+        <Route path="/order/:orderId" element={<OrderDetailsScreen />} />
       </Routes>
       <Footer />
     </BrowserRouter>
