@@ -14,6 +14,8 @@ import PlaceOrderScreen from "./components/Pages/PlaceOrderScreen/PlaceOrderScre
 import OrderDetailsScreen from "./components/Pages/OrderDetailsScreen/OrderDetailsScreen";
 import UserListScreen from "./components/Pages/UserListScreen/UserListScreen";
 import UserEditScreen from "./components/Pages/UserEditScreen/UserEditScreen";
+import ProductListScreen from "./components/Pages/ProductListScreen/ProductListScreen";
+import ProductEditScreen from "./components/Pages/ProductEditScreen/ProductEditScreen";
 
 function App() {
   return (
@@ -23,13 +25,19 @@ function App() {
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<HomeScreen />} />
         <Route path="/product/:id" element={<ProductScreen />} />
+        <Route path="admin/product/:productId/edit" element={<ProductEditScreen />} />
+
         <Route path="/cart/:id" element={<CartScreen />} />
         <Route path="/cart" element={<CartScreen />} />
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/profile" element={<ProfileScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
+
+        <Route path="/admin/productList" element={<ProductListScreen />} />
         <Route path="/admin/userList" element={<UserListScreen />} />
+
         <Route path="/admin/user/:userId/edit" element={<UserEditScreen />} />
+
         <Route path="/shipping" element={<ShippingScreen />} />
         <Route path="/payment" element={<PaymentScreen />} />
         <Route path="/placeOrder" element={<PlaceOrderScreen />} />

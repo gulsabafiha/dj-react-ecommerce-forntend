@@ -26,6 +26,7 @@ const UserEditScreen = () => {
     error: errorUpdate,
     success: successUpdate,
   } = userUpdate;
+  console.log(userDetails)
 
   useEffect(() => {
     if (successUpdate) {
