@@ -8,18 +8,20 @@ import { listProducts } from "../../../actions/productAction";
 import Loader from "../Loader";
 import Message from "../Message";
 
-const HomeScreen = () => {
+
+const HomeScreen = ({ props }) => {
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
   const { error, loading, products } = productList;
+   let keyword=window.location.search
+ 
 
   useEffect(() => {
-    dispatch(listProducts());
-  }, []);
+    dispatch(listProducts(keyword));
+  }, [dispatch,keyword]);
 
   return (
     <div>
-      
       <Container className="py-5">
         <h1>Latest Products</h1>
         {loading ? (
@@ -36,7 +38,6 @@ const HomeScreen = () => {
           </Row>
         )}
       </Container>
-      
     </div>
   );
 };

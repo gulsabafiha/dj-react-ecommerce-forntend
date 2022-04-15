@@ -4,14 +4,22 @@ import { useSelector, useDispatch } from "react-redux";
 import Message from "../Message";
 import Loader from "../Loader";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { getOrderDetails } from "../../../actions/orderActions";
+import { getOrderDetails, deliverOrder } from "../../../actions/orderActions";
+import { ORDER_DELIVERED_RESET } from "../../../constants/orderContance";
 
 const OrderDetailsScreen = () => {
   const { orderId } = useParams();
   const dispatch = useDispatch();
+  const navigate=useNavigate()
 
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, error, loading } = orderDetails;
+
+  const orderDeliver = useSelector((state) => state.orderDeliver);
+  const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   if (!loading && !error) {
     order.itemsPrice = order.orderItems
@@ -20,10 +28,19 @@ const OrderDetailsScreen = () => {
   }
 
   useEffect(() => {
-    if (!order || order._id !== Number(orderId)) {
+    if(!userInfo){
+      navigate('/login')
+    }
+
+    if (!order || order._id !== Number(orderId) || successDeliver) {
+      dispatch({ type: ORDER_DELIVERED_RESET });
       dispatch(getOrderDetails(orderId));
     }
-  }, [dispatch,order, orderId]);
+  }, [dispatch, order, orderId]);
+
+  const deliverHandler = () => {
+    dispatch(deliverOrder(order));
+  };
 
   return loading ? (
     <Loader />
@@ -37,18 +54,26 @@ const OrderDetailsScreen = () => {
           <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>Shipping</h2>
-              <p><strong>Name:</strong>{order.user.name}</p>
-              <p><strong>Email:</strong><a href={`mailto:${order.user.email}`}>{order.user.email}</a></p>
+              <p>
+                <strong>Name:</strong>
+                {order.user.name}
+              </p>
+              <p>
+                <strong>Email:</strong>
+                <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
+              </p>
               <p>
                 <strong>Shipping:</strong>
                 {order.shippingAddress.address},{order.shippingAddress.city},{" "}
                 {order.shippingAddress.postalCode},{" "}
                 {order.shippingAddress.country}
               </p>
-              {order.isDelivers ? (
-                  <Message variant='success'>Delivered on:{order.deliverAt}</Message>
-              ):(
-                <Message variant='warning'>Not Delivered</Message>  
+              {order.isDelivered ? (
+                <Message variant="success">
+                  Delivered on:{order.deliveredAt}
+                </Message>
+              ) : (
+                <Message variant="warning">Not Delivered</Message>
               )}
             </ListGroup.Item>
             <ListGroup.Item>
@@ -58,9 +83,9 @@ const OrderDetailsScreen = () => {
                 {order.paymentMethod}
               </p>
               {order.isPaid ? (
-                  <Message variant='success'>Paid on:{order.paidAt}</Message>
-              ):(
-                <Message variant='warning'>Not Paid</Message>  
+                <Message variant="success">Paid on:{order.paidAt}</Message>
+              ) : (
+                <Message variant="warning">Not Paid</Message>
               )}
             </ListGroup.Item>
             <ListGroup.Item>
@@ -128,6 +153,21 @@ const OrderDetailsScreen = () => {
                 </Row>
               </ListGroup.Item>
             </ListGroup>
+            {loadingDeliver && <Loader/>}
+            {userInfo &&
+              userInfo.isAdmin &&
+              order.isPaid &&
+              !order.isDelivered && (
+                <ListGroup.Item>
+                  <Button
+                    type="button"
+                    className="btn btn-block"
+                    onClick={deliverHandler}
+                  >
+                    Mark as Deliver
+                  </Button>
+                </ListGroup.Item>
+              )}
           </Card>
         </Col>
       </Row>

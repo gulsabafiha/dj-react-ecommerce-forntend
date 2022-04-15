@@ -6,10 +6,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../Loader";
 import Message from "../Message";
 import { LinkContainer } from "react-router-bootstrap";
-import { createProduct, deleteProduct, listProducts } from "../../../actions/productAction";
-import { PRODUCT_CREATE_RESET
-} from "../../../constants/productConstants";
-
+import {
+  createProduct,
+  deleteProduct,
+  listProducts,
+} from "../../../actions/productAction";
+import { PRODUCT_CREATE_RESET } from "../../../constants/productConstants";
 
 const ProductListScreen = () => {
   const dispatch = useDispatch();
@@ -30,24 +32,32 @@ const ProductListScreen = () => {
   const {
     loading: loadingCreate,
     error: errorCreate,
-    success: successCreate,product:createdProduct
+    success: successCreate,
+    product: createdProduct,
   } = productCreate;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
   useEffect(() => {
-    dispatch({type:PRODUCT_CREATE_RESET})
+    dispatch({ type: PRODUCT_CREATE_RESET });
     if (!userInfo.isAdmin) {
       navigate("/login");
-    } 
-    
-    if(successCreate){
-      navigate(`/admin/product/${createdProduct._id}/edit`)
-    }else{
-      dispatch(listProducts())
     }
-  }, [dispatch, navigate, userInfo, successDelete,successCreate,createdProduct]);
+
+    if (successCreate) {
+      navigate(`/admin/product/${createdProduct._id}/edit`);
+    } else {
+      dispatch(listProducts());
+    }
+  }, [
+    dispatch,
+    navigate,
+    userInfo,
+    successDelete,
+    successCreate,
+    createdProduct,
+  ]);
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
@@ -56,7 +66,7 @@ const ProductListScreen = () => {
   };
 
   const createProductHandler = () => {
-    dispatch(createProduct())
+    dispatch(createProduct());
   };
   return (
     <div className="container">
@@ -66,7 +76,7 @@ const ProductListScreen = () => {
         </Col>
         <Col className="text-right">
           <Button className="my-3" onClick={createProductHandler}>
-            <i className="fas fa-plus"> Create&nbsp;Product</i>
+            <i className="fas fa-plus"> C r e a t e &nbsp; P r o d u c t</i>
           </Button>
         </Col>
       </Row>
@@ -90,31 +100,32 @@ const ProductListScreen = () => {
               <th></th>
             </tr>
           </thead>
-          {products.map((product) => (
-            <tr key={product._id}>
-              <td>{product._id}</td>
-              <td>{product.name}</td>
-              <td>{product.price}</td>
-              <td>{product.category}</td>
-              <td>{product.brand}</td>
+          <tbody>
+            {products.map((product) => (
+              <tr key={product._id}>
+                <td>{product._id}</td>
+                <td>{product.name}</td>
+                <td>{product.price}</td>
+                <td>{product.category}</td>
+                <td>{product.brand}</td>
 
-              <td>
-                <LinkContainer to={`/admin/product/${product._id}/edit`}>
-                  <Button variant="light" className="btn-sm">
-                    <i className="fas fa-edit"></i>
+                <td>
+                  <LinkContainer to={`/admin/product/${product._id}/edit`}>
+                    <Button variant="light" className="btn-sm">
+                      <i className="fas fa-edit"></i>
+                    </Button>
+                  </LinkContainer>
+                  <Button
+                    variant="danger"
+                    className="btn-sm"
+                    onClick={() => deleteHandler(product._id)}
+                  >
+                    <i className="fas fa-trash"></i>
                   </Button>
-                </LinkContainer>
-                <Button
-                  variant="danger"
-                  className="btn-sm"
-                  onClick={() => deleteHandler(product._id)}
-                >
-                  <i className="fas fa-trash"></i>
-                </Button>
-              </td>
-            </tr>
-          ))}
-          <thead></thead>
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </Table>
       )}
     </div>

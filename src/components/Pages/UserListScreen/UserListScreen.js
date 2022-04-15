@@ -8,6 +8,7 @@ import Loader from "../Loader";
 import Message from "../Message";
 import { LinkContainer } from "react-router-bootstrap";
 
+
 const UserListScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ const UserListScreen = () => {
               <th></th>
             </tr>
           </thead>
+          <tbody>
           {users.map((user) => (
             <tr key={user._id}>
               <td>{user._id}</td>
@@ -73,7 +75,7 @@ const UserListScreen = () => {
                 </LinkContainer>
                 <Button
                   variant="danger"
-                  className="btn-sm"
+                  className="btn-sm" 
                   onClick={() => deleteHandler(user._id)}
                 >
                   <i className="fas fa-trash"></i>
@@ -81,7 +83,7 @@ const UserListScreen = () => {
               </td>
             </tr>
           ))}
-          <thead></thead>
+          </tbody> 
         </Table>
       )}
     </div>
