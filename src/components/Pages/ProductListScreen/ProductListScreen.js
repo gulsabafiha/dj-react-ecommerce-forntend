@@ -12,14 +12,15 @@ import {
   listProducts,
 } from "../../../actions/productAction";
 import { PRODUCT_CREATE_RESET } from "../../../constants/productConstants";
+import Paginate from "../Paginate";
 
 const ProductListScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { productId } = useParams();
+ 
 
   const productList = useSelector((state) => state.productList);
-  const { loading, error, products } = productList;
+  const { loading, error, products,page,pages } = productList;
 
   const productDelete = useSelector((state) => state.productDelete);
   const {
@@ -38,7 +39,7 @@ const ProductListScreen = () => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-
+  let keyword=window.location.search
   useEffect(() => {
     dispatch({ type: PRODUCT_CREATE_RESET });
     if (!userInfo.isAdmin) {
@@ -48,7 +49,7 @@ const ProductListScreen = () => {
     if (successCreate) {
       navigate(`/admin/product/${createdProduct._id}/edit`);
     } else {
-      dispatch(listProducts());
+      dispatch(listProducts(keyword));
     }
   }, [
     dispatch,
@@ -57,6 +58,7 @@ const ProductListScreen = () => {
     successDelete,
     successCreate,
     createdProduct,
+    keyword
   ]);
 
   const deleteHandler = (id) => {
@@ -128,6 +130,7 @@ const ProductListScreen = () => {
           </tbody>
         </Table>
       )}
+      <Paginate pages={pages} page={page} isAdmin={true} />
     </div>
   );
 };

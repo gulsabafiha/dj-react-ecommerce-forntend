@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SearchBox = () => {
   const [keyword, setKeyword] = useState("");
-  let navigate=useNavigate();
- 
-  
+  let navigate = useNavigate();
+
   const submitHandler = (e) => {
     e.preventDefault();
-    if(keyword){
-        navigate(`/home?keyword=${keyword}`)
-    }else{
-        navigate(navigate(window.location.pathname))
+    if (keyword) {
+      navigate(`/home?keyword=${keyword}&page=1`);
+    } else {
+      navigate(navigate(window.location.pathname));
     }
   };
 
@@ -28,13 +27,11 @@ const SearchBox = () => {
           ></Form.Control>
         </Col>
         <Col sm={4}>
-        <Button type="submit" variant="outline-light" className="p-2">
-        Submit
-      </Button>
+          <Button type="submit" variant="outline-light" className="p-2">
+            Submit
+          </Button>
         </Col>
       </Row>
-
-      
     </Form>
   );
 };
