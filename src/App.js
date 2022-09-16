@@ -22,7 +22,8 @@ function App() {
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path="/" element={<Navigate to="/home" />} />
+        <Route index element={<HomeScreen />} />
+        <Route path="/" element={<HomeScreen />} />
         <Route path="/home" element={<HomeScreen />} />
         <Route path="/product/:id" element={<ProductScreen />} />
         <Route
