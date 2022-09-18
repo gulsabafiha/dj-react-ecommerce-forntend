@@ -41,7 +41,7 @@ export const login = (email, password) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      "/api/users/login/",
+      "https://proshop455.herokuapp.com/api/users/login/",
       { username: email, password: password },
       config
     );
@@ -84,7 +84,7 @@ export const register = (name, email, password) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      "/api/users/register/",
+      "https://proshop455.herokuapp.com/api/users/register/",
       { name: name, email: email, password: password },
       config
     );
@@ -164,7 +164,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(
-      `/api/users/profile/update/`,
+      `https://proshop455.herokuapp.com/api/users/profile/update/`,
       user,
       config
     );
@@ -241,7 +241,10 @@ export const deleteUser = (id) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.delete(`/api/users/delete/${id}/`, config);
+    const { data } = await axios.delete(
+      `https://proshop455.herokuapp.com/api/users/delete/${id}/`,
+      config
+    );
 
     dispatch({
       type: USER_DELETE_SUCCESS,
@@ -275,7 +278,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(
-      `/api/users/update/${user._id}/`,
+      `https://proshop455.herokuapp.com/api/users/update/${user._id}/`,
       user,
       config
     );

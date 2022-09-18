@@ -8,23 +8,21 @@ import Message from "../Message";
 import Paginate from "../Paginate";
 import ProductCarousel from "../ProductCarousel";
 
-
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
-  const { error, loading, products,page,pages } = productList;
-  let keyword = window.location.search
+  const { error, loading, products, page, pages } = productList;
+  let keyword = window.location.search;
 
   useEffect(() => {
-      dispatch(listProducts(keyword))
-
-  }, [dispatch, keyword])
+    dispatch(listProducts(keyword));
+  }, [dispatch, keyword]);
 
   return (
     <div>
       <Container className="py-5">
-        {!keyword && <ProductCarousel/>}
-        
+        {!keyword && <ProductCarousel />}
+
         <h1>Latest Products</h1>
         {loading ? (
           <Loader />
@@ -33,13 +31,13 @@ const HomeScreen = () => {
         ) : (
           <div>
             <Row>
-            {products.map((product) => (
-              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                <Product product={product} />
-              </Col>
-            ))}
-          </Row>
-          <Paginate page={page} pages={pages} keyword={keyword}/>
+              {products.map((product) => (
+                <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                  <Product product={product} />
+                </Col>
+              ))}
+            </Row>
+            <Paginate page={page} pages={pages} keyword={keyword} />
           </div>
         )}
       </Container>
